@@ -158,9 +158,13 @@ actions:
       cold_hours: >-
         {{ forecast | selectattr('temperature', 'le', low_temp_threshold) | list
         }}
+      first_cold_hour: >-
+        {{ cold_hours[0]['datetime'] | as_datetime | as_local if lows else none }}
       hot_hours: >-
         {{ forecast | selectattr('temperature', 'ge', high_temp_threshold) | list
         }}
+      first_hot_hour: >-
+        {{ hot_hours[0]['datetime'] | as_datetime | as_local if lows else none }}
       snowy_hours: >-
         {{ forecast | selectattr('condition', 'search', '(?i)snow|flurr(y|ies)')
         | list }}
@@ -181,9 +185,9 @@ actions:
         
         Over the next {{ num_hours_lookahead }} hours:
         {% if cold_alert %}
-        Temperature: Temps will dip below {{ low_temp_threshold }}{{ temp_unit }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}} (avg={{ avg_temp }}{{ temp_unit }}).{%endif%}
+        Temperature: Temps will dip below {{ low_temp_threshold }}{{ temp_unit }} starting at {{ format_datetime(first_cold_hour) }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}} (avg={{ avg_temp }}{{ temp_unit }}).{%endif%}
         {%- if hot_alert %}
-        Temperature: Temps will rise above {{ high_temp_threshold }}{{ temp_unit }} for {{ hot_hours | count }} hours, initially reaching a maximum of {{ max_temp }}{{ temp_unit }} at {{format_datetime(max_temp_hour)}} (avg={{ avg_temp }}{{ temp_unit }}).{%endif%}
+        Temperature: Temps will rise above {{ high_temp_threshold }}{{ temp_unit }} starting at {{ format_datetime(first_hot_hour) }} for {{ hot_hours | count }} hours, initially reaching a maximum of {{ max_temp }}{{ temp_unit }} at {{format_datetime(max_temp_hour)}} (avg={{ avg_temp }}{{ temp_unit }}).{%endif%}
         {%- if rain_alert %}
         Rain: It will be rainy for {{ rainy_hours | count }} hours (max_prob={{ (precip_prob_rainy_hours or [0]) | max }}%, avg_prob={{(precip_prob_rainy_hours or [0]) | average | round(1) }}%). {% endif%}
         {%- if snow_alert %}
@@ -196,9 +200,9 @@ actions:
         
         Weather Alert: Over the next {{ num_hours_lookahead }} hours:
         {% if cold_alert %}
-        Temperatures will dip below {{ low_temp_threshold }}{{ temp_unit }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}}.{%endif%}
+        Temperatures will dip below {{ low_temp_threshold }}{{ temp_unit }} starting at {{ format_datetime(first_cold_hour) }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}}.{%endif%}
         {%- if hot_alert %}
-        Temperatures will rise above {{ high_temp_threshold }}{{ temp_unit }} for {{ hot_hours | count }} hours, initially reaching a maximum of {{ max_temp }}{{ temp_unit }} at {{format_datetime(max_temp_hour)}}.{%endif%}
+        Temperatures will rise above {{ high_temp_threshold }}{{ temp_unit }} starting at {{ format_datetime(first_hot_hour) }} for {{ hot_hours | count }} hours, initially reaching a maximum of {{ max_temp }}{{ temp_unit }} at {{format_datetime(max_temp_hour)}}.{%endif%}
         {%- if rain_alert %}
         Rain: It will be rainy for {{ rainy_hours | count }} hours.{% endif%}
         {%- if snow_alert %}
@@ -216,6 +220,7 @@ actions:
         sticky: true
         clickAction: entityId:{{ weather_entity }}
         notification_icon: mdi:weather-cloudy-alert
+
   - action: assist_satellite.announce
     metadata: {}
     target:
