@@ -196,7 +196,7 @@ actions:
         
         Weather Alert: Over the next {{ num_hours_lookahead }} hours:
         {% if cold_alert %}
-        Temperatures will dip below {{ low_temp_threshold }}{{ temp_unit }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}} (avg={{ avg_temp }}{{ temp_unit }}).{%endif%}
+        Temperatures will dip below {{ low_temp_threshold }}{{ temp_unit }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}}.{%endif%}
         {%- if hot_alert %}
         Temperatures will rise above {{ high_temp_threshold }}{{ temp_unit }} for {{ hot_hours | count }} hours, initially reaching a maximum of {{ max_temp }}{{ temp_unit }} at {{format_datetime(max_temp_hour)}}.{%endif%}
         {%- if rain_alert %}
