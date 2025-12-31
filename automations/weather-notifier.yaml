@@ -42,9 +42,10 @@ blueprint:
           domain: weather
     notify_service:
       name: Notify Service
-      description: The service to use for notifications (e.g., notify.<my_notify_service>). **Do not include the `notify.` domain.**
+      description: The service to use for notifications.
       selector:
-        text:
+        entity:
+          domain: notify
     assist_satellite_id:
       name: Assist Satellite
       description: The assist satellite to use for announcements.
@@ -211,7 +212,7 @@ actions:
         {%- if snow_alert %}
         Snow: It will be snowy starting around {{ format_datetime(first_snowy_hour) }} for {{ snowy_hours | count }} hours.{% endif%}
 
-  - action: notify.{{ notify_group }}
+  - action: "notify.{{ notify_group }}"
     metadata: {}
     data:
       message: "{{ notification_message }}"
