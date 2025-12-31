@@ -47,11 +47,10 @@ blueprint:
         text:
     assist_satellite_id:
       name: Assist Satellite
-      description: The assist satellite to use for notifications (e.g., assist_satellite.<my_assist_satellite>). **Do not include the `assist_satellite.` domain.**
+      description: The assist satellite to use for announcements.
       selector:
-        target:
-          entity:
-            - domain: assist_satellite
+        entity:
+          domain: assist_satellite
     enable_snow_alert:
       name: Enable Snow Alerts
       description: Enable snow alert.
@@ -121,6 +120,7 @@ conditions: []
 actions:
   - variables:
       weather_entity: !input weather_entity
+      assist_satellite_id: !input assist_satellite_id
       temp_unit: "{{ state_attr(weather_entity, 'temperature_unit') }}"
       notify_group: !input notify_service
       enable_snow: !input enable_snow_alert
@@ -226,7 +226,8 @@ actions:
 
   - action: assist_satellite.announce
     metadata: {}
-    target: !input assist_satellite_id
+    target:
+      entity_id: assist_satellite_id
     data:
       message: '{{ announcement_message }}'
       preannounce: true
