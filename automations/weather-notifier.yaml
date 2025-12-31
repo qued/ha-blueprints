@@ -44,7 +44,7 @@ blueprint:
       name: Notify Service
       description: The service to use for notifications.
       selector:
-        entity:
+        service:
           domain: notify
     assist_satellite_id:
       name: Assist Satellite
