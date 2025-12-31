@@ -49,7 +49,9 @@ blueprint:
       name: Assist Satellite
       description: The assist satellite to use for notifications (e.g., assist_satellite.<my_assist_satellite>). **Do not include the `assist_satellite.` domain.**
       selector:
-        text:
+        target:
+          entity:
+            - domain: assist_satellite
     enable_snow_alert:
       name: Enable Snow Alerts
       description: Enable snow alert.
@@ -225,8 +227,7 @@ actions:
 
   - action: assist_satellite.announce
     metadata: {}
-    target:
-      entity_id: assist_satellite.{{ announcement_target }}
+    target: {{ announcement_target }}
     data:
       message: '{{  announcement_message }}'
       preannounce: true
