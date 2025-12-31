@@ -168,9 +168,9 @@ actions:
       snowy_hours: >-
         {{ forecast | selectattr('condition', 'search', '(?i)snow|flurr(y|ies)')
         | list }}
-      first_snowy_hour: {{ snowy_hours[0]['datetime'] | as_datetime | as_local if snowy_hours else none }}
+      first_snowy_hour: "{{ snowy_hours[0]['datetime'] | as_datetime | as_local if snowy_hours else none }}"
       rainy_hours: "{{ forecast | selectattr('condition', 'search', '(?i)rain') | list }}"
-      first_rainy_hour: {{ rainy_hours[0]['datetime'] | as_datetime | as_local if rainy_hours else none }}
+      first_rainy_hour: "{{ rainy_hours[0]['datetime'] | as_datetime | as_local if rainy_hours else none }}"
       precip_prob_snowy_hours: "{{ snowy_hours | map(attribute='precipitation_probability') | list }}"
       precip_prob_rainy_hours: "{{ rainy_hours | map(attribute='precipitation_probability') | list }}"
       cold_alert: "{{ enable_cold and cold_hours | count > num_hours_threshold }}"
