@@ -159,12 +159,12 @@ actions:
         {{ forecast | selectattr('temperature', 'le', low_temp_threshold) | list
         }}
       first_cold_hour: >-
-        {{ cold_hours[0]['datetime'] | as_datetime | as_local if lows else none }}
+        {{ cold_hours[0]['datetime'] | as_datetime | as_local if cold_hours else none }}
       hot_hours: >-
         {{ forecast | selectattr('temperature', 'ge', high_temp_threshold) | list
         }}
       first_hot_hour: >-
-        {{ hot_hours[0]['datetime'] | as_datetime | as_local if lows else none }}
+        {{ hot_hours[0]['datetime'] | as_datetime | as_local if hot_hours else none }}
       snowy_hours: >-
         {{ forecast | selectattr('condition', 'search', '(?i)snow|flurr(y|ies)')
         | list }}
@@ -197,7 +197,7 @@ actions:
         "Snow" if snow_alert] | select() | join(", ") }}
       announcement_message: |
         {% macro format_datetime(d) %}{{ d | as_timestamp | timestamp_custom("%-I %p") }}{% endmacro %}
-        
+
         Weather Alert: Over the next {{ num_hours_lookahead }} hours:
         {% if cold_alert %}
         Temperatures will dip below {{ low_temp_threshold }}{{ temp_unit }} starting at {{ format_datetime(first_cold_hour) if first_cold_hour else none }} for {{ cold_hours | count }} hours, initially reaching a minimum of {{ min_temp }}{{ temp_unit }} at {{format_datetime(min_temp_hour)}}.{%endif%}
