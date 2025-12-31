@@ -42,10 +42,9 @@ blueprint:
           domain: weather
     notify_service:
       name: Notify Service
-      description: The service to use for notifications.
+      description: The service to use for notifications (e.g., notify.<my_notify_service>). **Do not include the `notify.` domain.**
       selector:
-        service:
-          domain: notify
+        text:
     assist_satellite_id:
       name: Assist Satellite
       description: The assist satellite to use for announcements.
