@@ -227,7 +227,7 @@ actions:
   - action: assist_satellite.announce
     metadata: {}
     target:
-      entity_id: assist_satellite_id
+      entity_id: "{{ assist_satellite_id }}"
     data:
       message: '{{ announcement_message }}'
       preannounce: true
