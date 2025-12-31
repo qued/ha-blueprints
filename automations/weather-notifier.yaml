@@ -123,7 +123,6 @@ actions:
       weather_entity: !input weather_entity
       temp_unit: "{{ state_attr(weather_entity, 'temperature_unit') }}"
       notify_group: !input notify_service
-      announcement_target: !input assist_satellite_id
       enable_snow: !input enable_snow_alert
       enable_rain: !input enable_rain_alert
       enable_cold: !input enable_cold_alert
@@ -227,8 +226,8 @@ actions:
 
   - action: assist_satellite.announce
     metadata: {}
-    target: '{{ announcement_target }}'
+    target: !input assist_satellite_id
     data:
-      message: '{{  announcement_message }}'
+      message: '{{ announcement_message }}'
       preannounce: true
 mode: single
